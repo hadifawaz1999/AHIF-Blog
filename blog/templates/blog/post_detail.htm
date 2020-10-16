@@ -1,0 +1,38 @@
+{% extends "blog/base.htm" %}
+
+{% block content %}
+
+<article class="media content-section">
+  <a href="{% url 'user-posts' object.author.username %}"> <img class="article-img" src="{{ object.author.profile.image.url }}" alt="Profile Picture"> </a>
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
+      <small class="text-muted">{{ object.date_published|date:"F d, Y" }}</small>
+    </div>
+    <h2 class="article-title">{{ object.title }}</h2>
+    <p class="article-content">{{ object.content }}</p>
+    {% if request.user.is_authenticated %}
+        <form action="{% url 'like-post' %}" method="POST">
+          {% csrf_token %}
+          {% if is_liked %}
+          <button type="submit" name="post_id" class="btn btn-danger btn-sm" value="{{ object.id }}">Unlike</button>
+          {{ num_likes }} Likes
+          {% else %}
+          <button type="submit" name="post_id" class="btn btn-success btn-sm" value="{{ object.id }}">Like</button>
+          {{ num_likes }} Likes
+          {% endif %}
+        </form>
+    {% else %}
+        <p class="text-secondary">{{ num_likes }} Likes</p>
+    {% endif %}
+
+    {% if object.author == user %}
+    <hr style="background-color: black; height: 1px;">
+    <hr style="background-color: black; height: 1px;">
+    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
+    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
+    {% endif %}
+  </div>
+</article>
+
+{% endblock content %}

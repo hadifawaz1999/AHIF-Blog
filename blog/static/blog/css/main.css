@@ -1,0 +1,123 @@
+/* img.article-img {
+  height: 65px;
+  width: 65px;
+  border-radius: 0 50% 50% 50%;
+  margin-right: 16px;
+} */
+
+body {
+    background : url('../images/background.gif') ;
+    color: #333333;
+    margin-top: 5rem;
+  }
+  
+  h1{
+    color : rgb(255, 255, 255);
+  }
+
+  h2, h3, h4, h5, h6 {
+    color: #444444;
+  }
+  
+  ul {
+    margin: 0;
+  }
+  
+  .bg-steel {
+    background-color: #5f788a;
+  }
+  
+  .site-header .navbar-nav .nav-link {
+    color: #cbd5db;
+  }
+  
+  .site-header .navbar-nav .nav-link:hover {
+    color: #ffffff;
+  }
+  
+  .site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
+  }
+  
+  .content-section {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #0026fd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+  }
+  
+  .article-title {
+    color: #444444;
+  }
+  
+  a.article-title:hover {
+    color: #428bca;
+    text-decoration: none;
+  }
+  
+  .article-content {
+    white-space: pre-line;
+  }
+  
+  .article-metadata {
+    padding-bottom: 1px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #e3e3e3
+  }
+  
+  .article-metadata a:hover {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .article-svg {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+  }
+  
+  .account-img {
+    height: 125px;
+    width: 125px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+  }
+  
+  .account-heading {
+    font-size: 2.5rem;
+  }
+
+  .search-bar {
+    margin-right: 100px;
+    max-width: 500px;
+    width: 80%;
+  }
+
+  .form-inline {
+    display: flex;
+    flex-flow: row wrap;
+    /* align-items: center; */
+    margin-right: 200px;
+  }
+  
+  .form-inline input {
+    vertical-align: middle;
+    margin: 5px 10px 5px 0;
+    padding: 7px;
+    background-color: rgb(238, 236, 236);
+    border: 1px solid #ddd;
+    font: 50px;
+    
+  }
+
+  .form-inline button {
+    padding: 7px 7px;
+    background-color: rgb(25, 171, 255);
+    border: 1px solid #ddd;
+    color: white;
+  }
+
+  .for_about {
+    color: white;
+  }

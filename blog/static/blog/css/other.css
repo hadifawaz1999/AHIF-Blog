@@ -1,0 +1,40 @@
+.search-bar {
+    margin-right: 100px;
+    max-width: 500px;
+    width: 80%;
+  }
+
+  .form-inline {
+    display: flex;
+    flex-flow: row wrap;
+    /* align-items: center; */
+    margin-right: 200px;
+  }
+  
+  .form-inline input {
+    vertical-align: middle;
+    margin: 5px 10px 5px 0;
+    padding: 5px;
+    background-color: rgb(238, 236, 236);
+    border: 1px solid #ddd;
+    font: 50px;
+    
+  }
+
+  .form-inline button {
+    padding: 5px 5px;
+    background-color: rgba(0, 132, 255, 0.815);
+    border: 1px solid rgb(47, 231, 1);
+    color: white;
+  }
+
+
+  .for_about {
+    color: white;
+    font-size: 40px;
+  }
+
+  img.my_logo {
+    height: auto;
+    width: 150px;
+  }
