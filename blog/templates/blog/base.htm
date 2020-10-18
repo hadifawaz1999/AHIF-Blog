@@ -42,9 +42,9 @@
           <!-- Search Bar -->
             <form action="{% url 'search-bar' %}" method="GET" class="form-inline ">
               {% csrf_token %}
-                <input id="search_bar" class="mt-1" type="text" name="search" id="id_q" placeholder="Search posts here..."
+                <input id="search_bar" class="form-control search-bar mt-1" type="text" name="search" id="id_q" placeholder="Search posts here..."
                   value="{{ request.GET.search }}">
-              <button class="btn btn-primary btn-sm mt-1" type="submit">Search</button>
+              <button class="btn btn-sm" type="submit">Search</button>
             </form>
 
           <!-- Navbar Right Side -->
