@@ -11,7 +11,8 @@ from django.views.generic import (
     DeleteView
 )
 from .models import Post
-from django.core.paginator import Paginator
+from users.models import Profile
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 class SearchView(ListView):
     model=Post
@@ -52,6 +53,7 @@ class UserPostListView(ListView):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Post.objects.filter(author=user).order_by('-date_published')
 
+    
 
 class PostDetailView(DetailView):
     model = Post

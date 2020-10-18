@@ -1,0 +1,18 @@
+{% extends "blog/base.htm" %}
+
+{% block content %}
+    <article class="media content-section">
+        <img class="my_profile_pic" src="{{ PROFILE.profile.image.url }}" alt="Profile_pic">
+        <div class="media-body">
+            <h1 style="color: black;">{{ PROFILE.uername }}</h1>
+            <h6>Email : {{ PROFILE.email }}</h6>
+            <p class="text-secondary">About :</p>
+            {% if PROFILE.profile.about %}
+                <p class="text-secondary">{{ PROFILE.profile.about }</p>
+            {% else %}
+                <p class="text-secondary">...</p>
+            {% endif %}
+            <a class="btn btn-primary" href="{% url 'user-posts' PROFILE.username %}">See {{ PROFILE.username }}'s posts</a>
+        </div>
+    </article>
+{% endblock content %}

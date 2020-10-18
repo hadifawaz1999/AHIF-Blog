@@ -1,9 +1,10 @@
-gender=''
-
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from django.views.generic import ListView
+from users.models import Profile
+from django.contrib.auth.models import User
 
 
 def register(request):
@@ -11,9 +12,6 @@ def register(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            global gender
-            gender = form.cleaned_data.get('gender')
-            print(gender)
             messages.success(
                 request, f'Yout account is now created. You are able to Log In!')
             return redirect('login')
@@ -45,3 +43,11 @@ def profile(request):
     }
 
     return render(request, 'users/profile.htm', context)
+
+class ProfileView(ListView):
+    model=Profile
+    template_name='users/profile_view.htm'
+    context_object_name = 'PROFILE'
+
+    def get_queryset(self):
+        return get_object_or_404(User, username=self.kwargs.get('username'))
