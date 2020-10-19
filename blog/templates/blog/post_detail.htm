@@ -15,15 +15,27 @@
         <form action="{% url 'like-post' %}" method="POST">
           {% csrf_token %}
           {% if is_liked %}
-          <button type="submit" name="post_id" class="btn btn-danger btn-sm" value="{{ object.id }}">Unlike</button>
-          {{ num_likes }} Likes
+            <button type="submit" name="post_id" class="btn btn-danger btn-sm" value="{{ object.id }}">Unlike</button>
+            {% if num_likes == 1 %}
+              {{ num_likes }} Like
+            {% else %}
+              {{ num_likes }} Likes
+            {% endif %}
           {% else %}
-          <button type="submit" name="post_id" class="btn btn-success btn-sm" value="{{ object.id }}">Like</button>
-          {{ num_likes }} Likes
+            <button type="submit" name="post_id" class="btn btn-success btn-sm" value="{{ object.id }}">Like</button>
+            {% if num_likes == 1 %}
+              {{ num_likes }} Like
+            {% else %}
+              {{ num_likes }} Likes
+            {% endif %}
           {% endif %}
         </form>
     {% else %}
-        <p class="text-secondary">{{ num_likes }} Likes</p>
+        {% if num_likes == 1 %}
+          <p class="text-secondary">{{ num_likes }} Like</p>
+        {% else %}
+          <p class="text-secondary">{{ num_likes }} Likes</p>
+        {% endif %}
     {% endif %}
 
     {% if object.author == user %}
