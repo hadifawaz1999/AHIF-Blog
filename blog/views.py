@@ -47,7 +47,8 @@ class PostListView(ListView):
         context = super(PostListView,self).get_context_data(**kwargs)
         num_likess=[]
         is_likeds=[]
-        posts=Post.objects.all()
+        # posts=Post.objects.all().order_by('-date_published')
+        posts=context['posts']
         for post in posts:
             num_likess.append(post.likes.count)
             if post.likes.filter(id=self.request.user.id).exists():
