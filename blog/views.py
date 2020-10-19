@@ -41,6 +41,23 @@ class PostListView(ListView):
     context_object_name = 'posts'
     ordering = ['-date_published']
     paginate_by = 5
+    queryset=Post.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(PostListView,self).get_context_data(**kwargs)
+        num_likess=[]
+        is_likeds=[]
+        posts=Post.objects.all()
+        for post in posts:
+            num_likess.append(post.likes.count)
+            if post.likes.filter(id=self.request.user.id).exists():
+                is_likeds.append(True)
+            else:
+                is_likeds.append(False)
+        is_likeds_num_likess = zip(is_likeds,num_likess)
+        context['is_likeds_num_likess']=is_likeds_num_likess
+        return context
+    
 
 class UserPostListView(ListView):
     model = Post

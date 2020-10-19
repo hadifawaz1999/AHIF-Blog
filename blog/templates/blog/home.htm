@@ -4,7 +4,10 @@
 
 {% block content %}
 
-    {% for post in posts %}
+    {% for post,is_liked_num_likes in posts|zip:is_likeds_num_likess %}
+    {% with is_liked_num_likes|first as is_liked %}
+    {% with is_liked_num_likes|last as num_likes %}
+    
     <article class="media content-section">
         <a href="{% url 'profile-view' post.author.username %}"> <img class="article-img" src="{{ post.author.profile.image.url }}" alt="Profile Picture"> </a>
         <div class="media-body">
@@ -14,9 +17,24 @@
           </div>
           <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
           <p class="article-content">{{ post.content }}</p>
+          {% if request.user.is_authenticated %}
+            <form action="{% url 'like-post' %}" method="POST">
+              {% csrf_token %}
+              {% if is_liked %}
+                <button type="submit" name="post_id" class="btn btn-danger btn-sm" value="{{ post.id }}">Unlike</button>
+                {{ num_likes }} Likes
+              {% else %}
+                <button type="submit" name="post_id" class="btn btn-success btn-sm" value="{{ post.id }}">Like</button>
+                {{ num_likes }} Likes
+              {% endif %}
+            </form>
+          {% else %}
+            <p class="text-secondary">{{ num_likes }} Likes</p>
+          {% endif %}
         </div>
       </article>
-
+    {% endwith %}
+    {% endwith %}
     {% endfor %}
     {% if is_paginated %}
       {% if page_obj.has_previous %}
