@@ -8,7 +8,7 @@ class Post(models.Model):
     content = models.TextField()
     date_published = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    likes = models.ManyToManyField(User,related_name='post_likes',blank=True)
+    # likes = models.ManyToManyField(User,related_name='post_likes',blank=True)
 
     def __str__(self):
         return self.title
@@ -16,3 +16,7 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("post-detail", kwargs={"pk": self.pk})
     
+class Like(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    # liked = models.BooleanField(default=False)

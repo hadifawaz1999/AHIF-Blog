@@ -10,7 +10,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Post
+from .models import Post,Like
 from users.models import Profile
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
@@ -50,11 +50,21 @@ class PostListView(ListView):
         # posts=Post.objects.all().order_by('-date_published')
         posts=context['posts']
         for post in posts:
-            num_likess.append(post.likes.count)
-            if post.likes.filter(id=self.request.user.id).exists():
+            num_likess.append(post.like_set.all().count())
+            user=get_object_or_404(User,id=post.author_id)
+            if Like.objects.filter(user=user,post=post).exists():
                 is_likeds.append(True)
+                # Like.objects.filter(user=user,post=post).delete()
             else:
                 is_likeds.append(False)
+                # Like.objects.create(user=user,post=post)
+
+            # num_likess.append(post.likes.count)
+            # if post.likes.filter(id=self.request.user.id).exists():
+            #     is_likeds.append(True)
+            # else:
+            #     is_likeds.append(False)
+
         is_likeds_num_likess = zip(is_likeds,num_likess)
         context['is_likeds_num_likess']=is_likeds_num_likess
         return context
@@ -80,23 +90,31 @@ class PostDetailView(DetailView):
     def get_context_data(self, *args, **kwargs): 
         context = super().get_context_data(*args, **kwargs)
         post=get_object_or_404(Post,pk=self.kwargs.get('pk'))
-        
-        num_likes = post.likes.count
+        user=get_object_or_404(User,id=post.author_id)
+
+        num_likes = post.like_set.all().count()
 
         is_liked=False
-        if post.likes.filter(id=self.request.user.id).exists():
+        if Like.objects.filter(user=user,post=post).exists():
             is_liked=True
+
+        # num_likes = post.likes.count
+
+        # is_liked=False
+        # if post.likes.filter(id=self.request.user.id).exists():
+        #     is_liked=True
         context['is_liked']=is_liked
         context['num_likes']=num_likes
         return context 
 
 def LikeView(request):
     post = get_object_or_404(Post,id=request.POST.get('post_id'))
-    
-    if post.likes.filter(id=request.user.id).exists():
-        post.likes.remove(request.user)
+    user = get_object_or_404(User,id=post.author_id)
+
+    if Like.objects.filter(user=user,post=post).exists():
+        Like.objects.filter(user=user,post=post).delete()
     else:
-        post.likes.add(request.user)
+        Like.objects.create(user=user,post=post)
     return redirect(post.get_absolute_url())
 
 class PostCreateView(LoginRequiredMixin, CreateView):
