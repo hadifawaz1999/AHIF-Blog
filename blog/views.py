@@ -10,7 +10,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Post,Like
+from .models import Post,Like,Notification
 from users.models import Profile
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
@@ -110,12 +110,41 @@ class PostDetailView(DetailView):
 def LikeView(request):
     post = get_object_or_404(Post,id=request.POST.get('post_id'))
     user = get_object_or_404(User,id=post.author_id)
+    liked_by = request.user
 
     if Like.objects.filter(user=user,post=post).exists():
         Like.objects.filter(user=user,post=post).delete()
     else:
-        Like.objects.create(user=user,post=post)
+        Like.objects.create(user=user,post=post,liked_by=liked_by)
     return redirect(post.get_absolute_url())
+
+def NotificationDeleteView(request):
+    n = get_object_or_404(Notification,id=request.POST.get('notif_id'))
+    user=n.user
+    n.delete()
+    return redirect('notifications-user',username=user.username)
+
+# def NotificationView(request):
+#     user=get_object_or_404(User,id=request.kwargs.get('pk'))
+#     print(user)
+#     n = Notification.objects.filter(user=user)
+#     context['notifications']=n
+#     return render(request,'blog/notifications.htm',context)
+
+class NotificationView(LoginRequiredMixin, UserPassesTestMixin,ListView):
+    model = Notification
+    context_object_name = 'notifications'
+    template_name = 'blog/notifications.htm'
+
+    def get_queryset(self):
+        user = get_object_or_404(User,username=self.kwargs.get('username'))
+        return Notification.objects.filter(user=user)
+    
+    def test_func(self):
+        user = get_object_or_404(User,username=self.kwargs.get('username'))
+        if self.request.user == user:
+            return True
+        return False
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post

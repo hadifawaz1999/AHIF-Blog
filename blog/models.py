@@ -19,4 +19,10 @@ class Post(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
-    # liked = models.BooleanField(default=False)
+    liked_by = models.ForeignKey(User,on_delete=models.CASCADE,related_name='liked_by_user',null=True)
+
+class Notification(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE,null=True)
+    like = models.ForeignKey(Like,on_delete=models.CASCADE,null=True)
+    # content = models.TextField()

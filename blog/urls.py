@@ -9,6 +9,8 @@ from .views import (
     UserPostListView,
     SearchView,
     LikeView,
+    NotificationView,
+    NotificationDeleteView
     )
 from . import views
 
@@ -21,5 +23,7 @@ urlpatterns = [
     path('post/<int:pk>/delete',PostDeleteView.as_view(),name='post-delete'),
     path('user/<str:username>/',UserPostListView.as_view(),name='user-posts'),
     path(r'^like/$/',LikeView,name='like-post'),
+    path('notifications/<str:username>/',NotificationView.as_view(),name='notifications-user'),
+    path(r'^notification_delete/$/',NotificationDeleteView,name='notification-delete'),
     path('about/', views.about, name='blog-about'),
 ]

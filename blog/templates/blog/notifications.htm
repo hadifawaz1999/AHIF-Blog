@@ -1,0 +1,25 @@
+{% extends "blog/base.htm" %}
+
+{% block content %}
+{% if notifications %}
+<article class="media content-section">
+    <ul class="notifications">
+        {% for notification in notifications %}
+        <div class="media-body">
+            <li>{{ notification.like.liked_by.username }} liked your post "{{ notification.post.title }}".Click <a
+                    href="{% url 'post-detail' notification.post.id  %}">Here</a> to view.
+                <form action="{% url 'notification-delete' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" name="notif_id" class="btn btn-primary btn-sm"
+                        value="{{ notification.id }}">Mark as read.</button>
+                </form>
+            </li>
+            <hr style="background-color: black; height: 1px;">
+        </div>
+        {% endfor %}
+    </ul>
+</article>
+{% else %}
+<h1>You do not have any notifications.</h1>
+{% endif %}
+{% endblock content %}

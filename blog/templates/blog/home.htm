@@ -17,7 +17,7 @@
           </div>
           <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
           <p class="article-content">{{ post.content }}</p>
-          {% if request.user.is_authenticated %}
+          {% if request.user.is_authenticated and request.user != post.author %}
             <form action="{% url 'like-post' %}" method="POST">
               {% csrf_token %}
               {% if is_liked %}

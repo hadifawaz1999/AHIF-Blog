@@ -26,6 +26,10 @@ body {
   ul {
     margin: 0;
   }
+
+  ul.notifications {
+    list-style: none;
+  }
   
   .bg-steel {
     background-color: blue;
@@ -132,4 +136,16 @@ body {
 
   .for_about {
     color: white;
+  }
+
+  .notification-badge {
+    position: absolute;
+    /* top: -10px;
+    right: -10px; */
+    padding: 1px 4px;
+    font-size: 10px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+    margin-left: 5px;
   }
