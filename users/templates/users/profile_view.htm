@@ -4,7 +4,7 @@
     <article class="media content-section">
         <img class="my_profile_pic" src="{{ PROFILE.profile.image.url }}" alt="Profile_pic">
         <div class="media-body">
-            <h1 style="color: black;">{{ PROFILE.username }}</h1>
+            <h1 class="profile-name">{{ PROFILE.username }}</h1>
             <h6>Email : {{ PROFILE.email }}</h6>
             <p class="text-secondary">About :</p>
             {% if PROFILE.profile.about %}

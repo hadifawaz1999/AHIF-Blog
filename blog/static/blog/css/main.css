@@ -11,7 +11,7 @@ body {
     margin-top: 5rem;
   }
   
-  h1#profile_name {
+  h1.profile-name {
     color: black;
   }
 
