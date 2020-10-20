@@ -52,12 +52,15 @@ class PostListView(ListView):
         for post in posts:
             num_likess.append(post.like_set.all().count())
             user=get_object_or_404(User,id=post.author_id)
-            if Like.objects.filter(user=user,post=post).exists():
-                is_likeds.append(True)
-                # Like.objects.filter(user=user,post=post).delete()
+            if self.request.user.is_authenticated:
+                if Like.objects.filter(user=user,post=post,liked_by=self.request.user).exists():
+                    is_likeds.append(True)
+                    # Like.objects.filter(user=user,post=post).delete()
+                else:
+                    is_likeds.append(False)
+                    # Like.objects.create(user=user,post=post)
             else:
                 is_likeds.append(False)
-                # Like.objects.create(user=user,post=post)
 
             # num_likess.append(post.likes.count)
             # if post.likes.filter(id=self.request.user.id).exists():
@@ -93,9 +96,8 @@ class PostDetailView(DetailView):
         user=get_object_or_404(User,id=post.author_id)
 
         num_likes = post.like_set.all().count()
-
         is_liked=False
-        if Like.objects.filter(user=user,post=post).exists():
+        if self.request.user.is_authenticated and Like.objects.filter(user=user,post=post,liked_by=self.request.user).exists():
             is_liked=True
 
         # num_likes = post.likes.count
@@ -112,8 +114,8 @@ def LikeView(request):
     user = get_object_or_404(User,id=post.author_id)
     liked_by = request.user
 
-    if Like.objects.filter(user=user,post=post).exists():
-        Like.objects.filter(user=user,post=post).delete()
+    if Like.objects.filter(user=user,post=post,liked_by=liked_by).exists():
+        Like.objects.filter(user=user,post=post,liked_by=liked_by).delete()
     else:
         Like.objects.create(user=user,post=post,liked_by=liked_by)
     return redirect(post.get_absolute_url())

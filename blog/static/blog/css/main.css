@@ -31,6 +31,11 @@ body {
     list-style: none;
   }
   
+  ul.who-liked-it {
+    list-style: none;
+  }
+
+
   .bg-steel {
     background-color: blue;
   }
@@ -148,4 +153,13 @@ body {
     background: red;
     color: white;
     margin-left: 5px;
+  }
+
+  a.see-who-liked-it {
+    color: blue;
+  }
+
+  a.see-who-liked-it:hover {
+    color: #333;
+    text-decoration: none;
   }
