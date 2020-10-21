@@ -1,23 +1,31 @@
 {% extends "blog/base.htm" %}
 
+{% load my_tags %}
+
 {% block content %}
 
 
     <h1 class="mb-3">Posts By {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h1>
-    {% for post in posts %}
+    {% for post,is_liked_num_likes in posts|zip:is_likeds_num_likess %}
+    {% with is_liked_num_likes|first as is_liked %}
+    {% with is_liked_num_likes|last as num_likes %}
 
-    <article class="media content-section">
-        <a href="{% url 'profile-view' post.author.username %}"><img class="article-img" src="{{ post.author.profile.image.url }}"></a>
-        <div class="media-body">
-          <div class="article-metadata">
-            <a class="mr-2" href="{% url 'profile-view' post.author.username %}">{{ post.author }}</a>
-            <small class="text-muted">{{ post.date_published|date:"F d, Y" }}</small>
+      <article class="media content-section">
+          <a href="{% url 'profile-view' post.author.username %}"><img class="article-img" src="{{ post.author.profile.image.url }}"></a>
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{% url 'profile-view' post.author.username %}">{{ post.author }}</a>
+              <small class="text-muted">{{ post.date_published|date:"F d, Y" }}</small>
+            </div>
+            <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.content }}</p>
+            
+            {% include 'blog/like_form.htm' %}
+
           </div>
-          <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
-          <p class="article-content">{{ post.content }}</p>
-        </div>
-      </article>
-
+        </article>
+    {% endwith %}
+    {% endwith %}
     {% endfor %}
     {% if is_paginated %}
       

@@ -35,6 +35,26 @@ class SearchView(ListView):
                 queryset=Post.objects.none()
             return list(set(queryset))
 
+    def get_context_data(self, **kwargs):
+        context = super(SearchView,self).get_context_data(**kwargs)
+        num_likess=[]
+        is_likeds=[]
+        posts=context['posts']
+        for post in posts:
+            num_likess.append(post.like_set.all().count())
+            user=get_object_or_404(User,id=post.author_id)
+            if self.request.user.is_authenticated:
+                if Like.objects.filter(user=user,post=post,liked_by=self.request.user).exists():
+                    is_likeds.append(True)
+                else:
+                    is_likeds.append(False)
+            else:
+                is_likeds.append(False)
+
+        is_likeds_num_likess = zip(is_likeds,num_likess)
+        context['is_likeds_num_likess']=is_likeds_num_likess
+        return context
+
 class PostListView(ListView):
     model = Post
     template_name = 'blog/home.htm'
@@ -83,12 +103,36 @@ class UserPostListView(ListView):
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Post.objects.filter(author=user).order_by('-date_published')
+    
+    def get_context_data(self, **kwargs):
+        context = super(UserPostListView,self).get_context_data(**kwargs)
+        num_likess=[]
+        is_likeds=[]
+        posts=context['posts']
+        for post in posts:
+            num_likess.append(post.like_set.all().count())
+            user=get_object_or_404(User,id=post.author_id)
+            if self.request.user.is_authenticated:
+                if Like.objects.filter(user=user,post=post,liked_by=self.request.user).exists():
+                    is_likeds.append(True)
+                    # Like.objects.filter(user=user,post=post).delete()
+                else:
+                    is_likeds.append(False)
+                    # Like.objects.create(user=user,post=post)
+            else:
+                is_likeds.append(False)
+
+        is_likeds_num_likess = zip(is_likeds,num_likess)
+        context['is_likeds_num_likess']=is_likeds_num_likess
+        return context
+    
 
     
 
 class PostDetailView(DetailView):
     model = Post
     template_name='blog/post_detail.htm'
+    context_object_name = 'post'
 
     def get_context_data(self, *args, **kwargs): 
         context = super().get_context_data(*args, **kwargs)

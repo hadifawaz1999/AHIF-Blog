@@ -17,32 +17,9 @@
           </div>
           <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
           <p class="article-content">{{ post.content }}</p>
-          {% if request.user.is_authenticated and request.user != post.author %}
-            <form action="{% url 'like-post' %}" method="POST">
-              {% csrf_token %}
-              {% if is_liked %}
-                <button type="submit" name="post_id" class="btn btn-danger btn-sm" value="{{ post.id }}">Unlike</button>
-                {% if num_likes == 1 %}
-                  {{ num_likes }} Like
-                {% else %}
-                  {{num_likes}} Likes
-                {% endif %}
-              {% else %}
-                <button type="submit" name="post_id" class="btn btn-success btn-sm" value="{{ post.id }}">Like</button>
-                {% if num_likes == 1 %}  
-                  {{ num_likes }} Like
-                {% else %}
-                  {{ num_likes }} Likes
-                {% endif %}
-              {% endif %}
-            </form>
-          {% else %}
-            {% if num_likes == 1 %}
-              <p class="text-secondary">{{ num_likes }} Like</p>
-            {% else %}
-              <p class="text-secondary">{{ num_likes }} Likes</p>
-            {% endif %}
-          {% endif %}
+          
+          {% include 'blog/like_form.htm' %}
+
         </div>
       </article>
     {% endwith %}
